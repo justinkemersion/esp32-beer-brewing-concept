@@ -55,40 +55,53 @@ Setup Instructions
 
 1.  Clone or create project:
 
-    bash
-
-    Copy
-
-    `idf.py create-project beer_monitor cd beer_monitor/main`
+    ```bash
+    idf.py create-project beer_monitor cd beer_monitor/main
+    ```
 
 2.  Copy main.c and config.h into main/.
 3.  Update config.h with your Wi-Fi SSID, password, and MQTT broker address.
 4.  Update CMakeLists.txt:
 
-    cmake
-
-    Copy
-
-    `cmake_minimum_required(VERSION 3.5) include($ENV{IDF_PATH}/tools/cmake/project.cmake) project(beer_monitor) set(SOURCES main.c) idf_build_set_property(COMPILE_OPTIONS "-I${CMAKE_CURRENT_SOURCE_DIR}" APPEND)`
+    ```makefile
+    cmake_minimum_required(VERSION 3.5)
+    include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+    project(beer_monitor)
+    set(SOURCES main.c)
+    idf_build_set_property(COMPILE_OPTIONS "-I${CMAKE_CURRENT_SOURCE_DIR}" APPEND)
+    ```
 
 5.  Add dependencies (e.g., esp-idf-lib components) to components/ if needed.
 6.  Build and flash:
 
-    bash
-
-    Copy
-
-    `idf.py set-target esp32 idf.py build idf.py -p /dev/ttyUSB0 flash monitor`
+    ```bash
+    idf.py set-target esp32 
+    idf.py build 
+    idf.py -p /dev/ttyUSB0 flash monitor
+    ```
 
 ### Home Assistant Integration
 
 Add to configuration.yaml:
 
-yaml
-
-Copy
-
-`mqtt: sensor: - name: "Beer Temp" state_topic: "beer/fridge/beer_temp" unit_of_measurement: "°C" - name: "Ambient Temp" state_topic: "beer/fridge/ambient_temp" unit_of_measurement: "°C" - name: "Humidity" state_topic: "beer/fridge/humidity" unit_of_measurement: "%" binary_sensor: - name: "Fridge Door" state_topic: "beer/fridge/door" payload_on: "open" payload_off: "closed"`
+```yaml
+mqtt:
+  sensor:
+    - name: "Beer Temp"
+      state_topic: "beer/fridge/beer_temp"
+      unit_of_measurement: "°C"
+    - name: "Ambient Temp"
+      state_topic: "beer/fridge/ambient_temp"
+      unit_of_measurement: "°C"
+    - name: "Humidity"
+      state_topic: "beer/fridge/humidity"
+      unit_of_measurement: "%"
+  binary_sensor:
+    - name: "Fridge Door"
+      state_topic: "beer/fridge/door"
+      payload_on: "open"
+      payload_off: "closed"
+```
 
 Usage
 -----
@@ -96,11 +109,9 @@ Usage
 -   **Monitor**: View logs (idf.py monitor) or Home Assistant dashboard for real-time data.
 -   **Set Target Temp**: Send via MQTT:
 
-    bash
-
-    Copy
-
-    `mosquitto_pub -h homeassistant.local -t beer/fridge/set_temp -m "14.5"`
+    ```bash
+    mosquitto_pub -h homeassistant.local -t beer/fridge/set_temp -m "14.5"
+    ```
 
     -   Range: 5-25°C.
 -   **Temperature Control**:
