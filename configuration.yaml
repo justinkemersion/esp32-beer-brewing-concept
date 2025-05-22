@@ -1,0 +1,16 @@
+mqtt:
+  sensor:
+    - name: "Beer Temp"
+      state_topic: "beer/fridge/beer_temp"
+      unit_of_measurement: "°C"
+    - name: "Ambient Temp"
+      state_topic: "beer/fridge/ambient_temp"
+      unit_of_measurement: "°C"
+    - name: "Humidity"
+      state_topic: "beer/fridge/humidity"
+      unit_of_measurement: "%"
+  binary_sensor:
+    - name: "Fridge Door"
+      state_topic: "beer/fridge/door"
+      payload_on: "open"
+      payload_off: "closed"
